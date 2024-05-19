@@ -9,7 +9,8 @@ local z = 0
 local max = 16
 local deep = 64
 local facingfw = true
-local max_depth = 200	-- max depth of the quarry
+local max_depth = 200	-- default max depth of the quarry
+local chunks_forward = 1	-- default number of chunks to dig forward
 
 local OK = 0
 local ERROR = 1
@@ -30,24 +31,35 @@ local tArgs = {...}
 for i=1,#tArgs do
 	local arg = tArgs[i]
 	if string.find(arg, "-") == 1 then
-		for c=2,string.len(arg) do
-			local ch = string.sub(arg,c,c)
-			if ch == 'c' then
-				CHARCOALONLY = true
-			elseif ch == 'm' then
-				USEMODEM = true
-			else
-				io.print("Invalid flag '"..ch.."' !")
-				io.print("Continue? (Y/N)")
-				if (io.read()) ~= "Y"  then 
-					status = false
-				end
+		local ch = string.sub(arg,2)
+		if ch == 'h' then		-- display help
+			displayHelp()
+			status = false
+		elseif ch == 'm' then	-- use modem
+			USEMODEM = true
+		elseif ch == 'c' then	-- use charcoal only
+			CHARCOALONLY = true
+		elseif ch == 'f' then	-- dig how many chunks forward
+			print("How many chunks should the turtle dig forward?")
+			chunks_forward = tonumber(io.read())
+		elseif ch == 'd' then	-- dig how deep
+			print("How deep do you wish the turtle to dig?")
+			max_depth = tonumber(io.read())
+		else
+			io.print("Invalid flag '"..ch.."' !")
+			io.print("Continue? (Y/N)")
+			if (io.read()) ~= "Y"  then 
+				status = false
 			end
 		end
 	end
 end
 
 -- Functions
+function displayHelp()
+	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h	to display help\n	-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
+end
+
 function out(s)
 
 	s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
