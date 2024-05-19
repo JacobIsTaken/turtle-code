@@ -323,7 +323,9 @@ if USEMODEM then
 	rednet.open("right")
 end
 
-out("\n\n\n-- WELCOME TO THE MINING TURTLE --\n\n")
+print("####################################")
+print("### WELCOME TO THE MINING TURTLE ###")
+print("####################################\n")
 
 while status == true do
 

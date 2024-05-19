@@ -1,7 +1,10 @@
-# Ignore all files
+# Ignore image files
 *.jpg
 *.jpeg
 *.png
 
 # Ignore TO:DO
-*.txt
+TODO.txt
+
+# Ignore setup script
+setup.lua

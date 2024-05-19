@@ -1,4 +1,4 @@
-- reformat welcome screen		-- DOING
+- reformat welcome screen				-DOING
 
 - ask for max depth
 - add another material for stopping
@@ -6,4 +6,6 @@
 - check for chest in front of, not on the left
 - make it use charcoal blocks optionally
 
-- make autodownloader from github		!!
+- make autodownloader from github			-DONE
+
+https://pastebin.com/QZ0UDcKn
