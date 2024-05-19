@@ -1,4 +1,9 @@
 - reformat welcome screen		-- DOING
+
 - ask for max depth
 - add another material for stopping
 - make another program for how many chunks forward
+- check for chest in front of, not on the left
+- make it use charcoal blocks optionally
+
+- make autodownloader from github		!!

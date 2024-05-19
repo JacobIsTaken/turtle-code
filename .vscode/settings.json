@@ -3,7 +3,8 @@
         "turtle",
         "rednet",
         "t",
-        "inv"
+        "inv",
+        "write"
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global",

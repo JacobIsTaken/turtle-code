@@ -7,7 +7,7 @@ local z = 0
 local max = 16
 local deep = 64
 local facingfw = true
-local max_depth = 
+local max_depth = 200	-- max depth of the quarry
 
 local OK = 0
 local ERROR = 1
@@ -16,6 +16,8 @@ local OUTOFFUEL = 3
 local FULLINV = 4
 local BLOCKEDMOV = 5
 local USRINTERRUPT = 6
+
+local status = true
 
 local CHARCOALONLY = false
 local USEMODEM = false
@@ -33,15 +35,17 @@ for i=1,#tArgs do
 			elseif ch == 'm' then
 				USEMODEM = true
 			else
-				write("Invalid flag '")
-				write(ch)
-				print("'")
+				io.print("Invalid flag '"..ch.."' !")
+				io.print("Continue? (Y/N)")
+				if (io.read()) ~= "Y"  then 
+					status = false
+				end
 			end
 		end
 	end
 end
 
-
+-- Functions
 function out(s)
 
 	s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
@@ -311,13 +315,17 @@ function mainloop()
 	end
 end
 
+
+-- MAIN RUNTIME
+
+
 if USEMODEM then
 	rednet.open("right")
 end
 
 out("\n\n\n-- WELCOME TO THE MINING TURTLE --\n\n")
 
-while true do
+while status == true do
 
 	goDown()
 
