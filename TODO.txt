@@ -1,0 +1,4 @@
+- reformat welcome screen		-- DOING
+- ask for max depth
+- add another material for stopping
+- make another program for how many chunks forward
