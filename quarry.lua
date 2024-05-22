@@ -58,6 +58,8 @@ function dropInChest()
 				turtle.drop()
 			end
 		end
+	else
+		out("No chest found")
 	end
 
 	turtle.turnLeft()
@@ -291,6 +293,7 @@ function mainloop()
 		-- Check if the turtle has reached max depth
 		if math.abs(z) >= max_depth then
 			out("Reached max depth!, going back")
+			goUp()
 			goToOrigin()
 			return LAYERCOMPLETE
 		end
