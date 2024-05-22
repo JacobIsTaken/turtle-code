@@ -1,4 +1,4 @@
--- BUILD VERSION 2021_22_05_2024
+-- BUILD VERSION 2038_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -98,16 +98,35 @@ function refuel()
 		turtle.select(i)
 		
 		item = turtle.getItemDetail()
-		if item and
-		(item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and
-		(CHARCOALONLY == false or item.damage == 1))) and
-		turtle.refuel(1) then
+
+		if item and (item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and (CHARCOALONLY == false or item.damage == 1))) and turtle.refuel(1) then
 			return true
 		end
 	end
-	
 	return false
 end
+
+function refuel()
+    for i=1, 16 do
+        -- Prioritize charcoal blocks
+        turtle.select(i)
+        item = turtle.getItemDetail()
+        if item and (item.name == "minecraft:charcoal_block" and turtle.refuel(1)) then
+            return true
+        end
+    end
+    for i=1, 16 do
+        -- Only run on Charcoal
+        turtle.select(i)
+        item = turtle.getItemDetail()
+        if item and (item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and (CHARCOALONLY == false or item.damage == 1))) and turtle.refuel(1) then
+            return true
+        end
+    end
+    return false
+end
+
+
 
 function moveH()
 	if inv.isInventoryFull() then
@@ -337,12 +356,13 @@ if USEMODEM then
 	rednet.open("right")
 end
 
-print("####################################")
-print("### WELCOME TO THE MINING TURTLE ###")
-print("####################################\n")
-
 while status == true do
-
+	
+	print("####################################")
+	print("### WELCOME TO THE MINING TURTLE ###")
+	print("####################################\n")
+	
+	out("Starting mining")
 	goDown()
 
 	local errorcode = mainloop()
