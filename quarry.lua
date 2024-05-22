@@ -1,4 +1,4 @@
--- BUILD VERSION 2330_22_05_2024
+-- BUILD VERSION 2352_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -69,10 +69,10 @@ end
 function goDown()
 	while true do
 		-- Check if the turtle has reached max depth
-		if math.abs(z) >= max_depth then
-			out("Reached max depth!, going back")
-			return
-		end
+		-- if math.abs(z) >= max_depth then
+		-- 	out("Reached max depth!, going back")
+		-- 	return
+		-- end
 		if turtle.getFuelLevel() <= fuelNeededToGoBack() then
 			if not refuel() then
 				return OUTOFFUEL
