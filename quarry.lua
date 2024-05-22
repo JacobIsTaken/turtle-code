@@ -28,7 +28,7 @@ local USEMODEM = false
 
 -- Functions
 function displayHelp()
-	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h	to display help\n	-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
+	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h	to display help\n-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
 end
 
 function out(s)
@@ -42,7 +42,7 @@ function out(s)
 end
 
 function dropInChest()
-	turtle.turnLeft()
+	turnAround()
 	
 	local success, data = turtle.inspect()
 	
@@ -67,8 +67,7 @@ function dropInChest()
 		end
 	end
 	
-	turtle.turnRight()
-	
+	turnAround()
 end
 
 function goDown()
@@ -111,7 +110,7 @@ function refuel()
         -- Prioritize charcoal blocks
         turtle.select(i)
         item = turtle.getItemDetail()
-        if item and (item.name == "minecraft:charcoal_block" and turtle.refuel(1)) then
+        if item and (item.name == "quark:charcoal_block" and turtle.refuel(1)) then
             return true
         end
     end
