@@ -1,4 +1,4 @@
--- BUILD VERSION 2229_22_05_2024
+-- BUILD VERSION 2232_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -42,7 +42,8 @@ function out(s)
 end
 
 function dropInChest()
-	turnAround()
+	turtle.turnRight()
+	turtle.turnRight()
 		
 	local success, data = turtle.inspect()
 
@@ -59,7 +60,8 @@ function dropInChest()
 		end
 	end
 
-	turnAround()
+	turtle.turnLeft()
+	turtle.turnLeft()
 end
 
 function goDown()
