@@ -64,6 +64,11 @@ end
 
 function goDown()
 	while true do
+		-- Check if the turtle has reached max depth
+		if z <= max_depth then
+			out("Reached max depth!, going back")
+			return
+		end
 		if turtle.getFuelLevel() <= fuelNeededToGoBack() then
 			if not refuel() then
 				return OUTOFFUEL
@@ -212,7 +217,7 @@ function digLayer()
 	
 	while errorcode == OK do
 		if USEMODEM then
-			local msg = rednet.receive(1)
+			local msg = rednet.receive(2)
 			if msg ~= nil and string.find(msg, "return") ~= nil then
 				return USRINTERRUPT
 			end
@@ -281,6 +286,12 @@ function mainloop()
 	
 	while true do
 		
+		-- Check if the turtle has reached max depth
+		if z <= max_depth then
+			out("Reached max depth!, going back")
+			return LAYERCOMPLETE
+		end
+
 		local errorcode = digLayer()
 		
 		if errorcode ~= OK then
@@ -344,26 +355,36 @@ end
 
 
 if USEMODEM then
-	rednet.open("right")
+	rednet.open("left")
 end
 
-while status == true do
+-- Digging chunks forward
+for i = 1, chunks_forward, 1 do
+	-- Digging chunk
+	while status == true do
+		
+		print("####################################")
+		print("### WELCOME TO THE MINING TURTLE ###")
+		print("####################################\n")
+		
+		out("Starting mining")
+		goDown()
 	
-	print("####################################")
-	print("### WELCOME TO THE MINING TURTLE ###")
-	print("####################################\n")
-	
-	out("Starting mining")
-	goDown()
-
-	local errorcode = mainloop()
-	dropInChest()
-	
-	if errorcode ~= FULLINV then
-		break
+		local errorcode = mainloop()
+		dropInChest()
+		
+		if errorcode ~= FULLINV then
+			break
+		end
 	end
+	for j = 1, 15, 1 do
+		turtle.forward()
+	end
+	turtle.dig()
+	turtle.forward()
+	turtle.digUp()
 end
 
 if USEMODEM then
-	rednet.close("right")
+	rednet.close("left")
 end
