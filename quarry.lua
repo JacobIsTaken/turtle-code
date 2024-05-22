@@ -1,4 +1,4 @@
--- BUILD VERSION 0003_23_05_2024
+-- BUILD VERSION 0055_23_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -19,6 +19,7 @@ local OUTOFFUEL = 3
 local FULLINV = 4
 local BLOCKEDMOV = 5
 local USRINTERRUPT = 6
+local MAXDEPTH = 7
 
 local status = true
 
@@ -33,8 +34,10 @@ end
 
 function out(s)
 	
-	s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
-			
+	-- s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
+	
+	s2 = "["..x..";"..y..";"..z.."] "..s
+
 	print(s2)
 	if USEMODEM then
 		rednet.broadcast(s2, "miningTurtle")
@@ -70,8 +73,7 @@ function goDown()
 	while true do
 		-- Check if the turtle has reached max depth
 		if math.abs(z) >= max_depth then
-			out("Reached max depth!, going back")
-			return
+			return false
 		end
 		if turtle.getFuelLevel() <= fuelNeededToGoBack() then
 			if not refuel() then
@@ -82,7 +84,7 @@ function goDown()
 		if not turtle.down() then
 			turtle.up()
 			z = z+1
-			return
+			return true
 		end
 		z = z-1
 	end
@@ -90,20 +92,6 @@ end
 
 function fuelNeededToGoBack()
 	return -z + x + y + 2
-end
-
-function refuel()
-	for i=1, 16 do
-		-- Only run on Charcoal
-		turtle.select(i)
-		
-		item = turtle.getItemDetail()
-
-		if item and (item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and (CHARCOALONLY == false or item.damage == 1))) and turtle.refuel(1) then
-			return true
-		end
-	end
-	return false
 end
 
 function refuel()
@@ -125,8 +113,6 @@ function refuel()
     end
     return false
 end
-
-
 
 function moveH()
 	if inv.isInventoryFull() then
@@ -291,9 +277,9 @@ function mainloop()
 	
 	while true do
 		
-		-- if the turtle has reached max depth go back to start
+		-- if the turtle has reached max depth while in the loop go back to start
 		if math.abs(z) >= max_depth then
-			-- out("Reached max depth!, going back")
+			out("Reached max depth!, going back")
 			goBackToStart()
 			return LAYERCOMPLETE
 		end
@@ -361,32 +347,49 @@ for i=1,#tArgs do
 	end
 end
 
-
 if USEMODEM then
 	rednet.open("left")
 end
 
+-- Main runtime
+print("#######################################")
+print("#### QUARRY TURTLE SOFTWARE V0.1.1 ####")
+print("#######################################\n")
+
+out("Starting mining")
+
 -- Digging chunks forward
-for i = 1, chunks_forward, 1 do
+for current_chunk = 1, chunks_forward, 1 do
+	
 	-- Digging chunk
 	while status == true do
-									
-		print("#######################################")
-		print("#### QUARRY TURTLE SOFTWARE V0.1.1 ####")
-		print("#######################################\n")
+
+		-- if it can't go down then it reached max depth
+		if goDown() then
+			local errorcode = mainloop()
+		else
+			out("Reached max depth!, going back")
+			errorcode = MAXDEPTH
+			goBackToStart()
+		end
 		
-		out("Starting mining")
-		goDown()
-	
-		local errorcode = mainloop()
+		out("Chunk finished")
+
+		-- if its on other chunks go back to first one and dump items in chest
+		if current_chunk>1 then
+			for j = 1, (chunks_forward-1)*16, 1 do
+				turtle.back()
+			end
+		end
 		dropInChest()
 		
 		if errorcode ~= FULLINV then
 			break
 		end
 	end
-	if chunks_forward>1 and i~=chunks_forward then
-		for j = 1, 15, 1 do
+	if chunks_forward>1 and current_chunk~=chunks_forward then
+		out("Starting next chunk")
+		for j = 1, ((current_chunk-1)*16)+15, 1 do
 			turtle.forward()
 		end
 		turtle.dig()
