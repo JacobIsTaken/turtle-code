@@ -26,42 +26,13 @@ local CHARCOALONLY = false
 local USEMODEM = false
 
 
--- Arguments
-local tArgs = {...}
-for i=1,#tArgs do
-	local arg = tArgs[i]
-	if string.find(arg, "-") == 1 then
-		local ch = string.sub(arg,2)
-		if ch == 'h' then		-- display help
-			displayHelp()
-			status = false
-		elseif ch == 'm' then	-- use modem
-			USEMODEM = true
-		elseif ch == 'c' then	-- use charcoal only
-			CHARCOALONLY = true
-		elseif ch == 'f' then	-- dig how many chunks forward
-			print("How many chunks should the turtle dig forward?")
-			chunks_forward = tonumber(io.read())
-		elseif ch == 'd' then	-- dig how deep
-			print("How deep do you wish the turtle to dig?")
-			max_depth = tonumber(io.read())
-		else
-			io.print("Invalid flag '"..ch.."' !")
-			io.print("Continue? (Y/N)")
-			if (io.read() ~= "Y" or io.read() ~= "y")  then 
-				status = false
-			end
-		end
-	end
-end
-
 -- Functions
 function displayHelp()
 	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h	to display help\n	-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
 end
 
 function out(s)
-
+	
 	s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
 			
 	print(s2)
@@ -77,7 +48,7 @@ function dropInChest()
 	
 	if success then
 		if data.name == "minecraft:chest" then
-		
+			
 			out("Dropping items in chest")
 			
 			for i=1, 16 do
@@ -86,10 +57,10 @@ function dropInChest()
 				data = turtle.getItemDetail()
 				
 				if data ~= nil and
-						data.name ~= "minecraft:charcoal" and
-						(data.name == "minecraft:coal" and CHARCOALONLY == false) == false and
-						(data.damage == nil or data.name .. data.damage ~= "minecraft:coal1") then
-
+				data.name ~= "minecraft:charcoal" and
+				(data.name == "minecraft:coal" and CHARCOALONLY == false) == false and
+				(data.damage == nil or data.name .. data.damage ~= "minecraft:coal1") then
+					
 					turtle.drop()
 				end
 			end
@@ -107,7 +78,7 @@ function goDown()
 				return OUTOFFUEL
 			end
 		end
-	
+		
 		if not turtle.down() then
 			turtle.up()
 			z = z+1
@@ -128,9 +99,9 @@ function refuel()
 		
 		item = turtle.getItemDetail()
 		if item and
-				(item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and
-				(CHARCOALONLY == false or item.damage == 1))) and
-				turtle.refuel(1) then
+		(item.name == "minecraft:charcoal" or (item.name == "minecraft:coal" and
+		(CHARCOALONLY == false or item.damage == 1))) and
+		turtle.refuel(1) then
 			return true
 		end
 	end
@@ -162,7 +133,7 @@ function moveH()
 	end
 	
 	if facingfw and y<max-1 then
-	-- Going one way
+		-- Going one way
 		local dugFw = t.dig()
 		if dugFw == false then
 			out("Hit bedrock, can't keep going")
@@ -176,9 +147,9 @@ function moveH()
 		end
 		
 		y = y+1
-	
+		
 	elseif not facingfw and y>0 then
-	-- Going the other way
+		-- Going the other way
 		t.dig()
 		t.digUp()
 		t.digDown()
@@ -228,7 +199,7 @@ end
 function digLayer()
 	
 	local errorcode = OK
-
+	
 	while errorcode == OK do
 		if USEMODEM then
 			local msg = rednet.receive(1)
@@ -283,7 +254,7 @@ function goToOrigin()
 end
 
 function goUp()
-
+	
 	while z < 0 do
 		
 		t.up()
@@ -297,11 +268,11 @@ function goUp()
 end
 
 function mainloop()
-
-	while true do
-
-		local errorcode = digLayer()
 	
+	while true do
+		
+		local errorcode = digLayer()
+		
 		if errorcode ~= OK then
 			goUp()
 			return errorcode
@@ -310,27 +281,56 @@ function mainloop()
 		goToOrigin()
 		
 		for i=1, 3 do
-   -- Changed code!
+			-- Changed code!
 			if not t.digDown() then
-    goUp()
-    return BLOCKEDMOV
-   end
+				goUp()
+				return BLOCKEDMOV
+			end
 			success = t.down()
-		
+			
 			if not success then
 				goUp()
 				return BLOCKEDMOV
 			end
-
+			
 			z = z-1
 			out("Z: " .. z)
-
+			
 		end
 	end
 end
 
 
 -- MAIN RUNTIME
+
+-- Handling Arguments
+local tArgs = {...}
+for i=1,#tArgs do
+	local arg = tArgs[i]
+	if string.find(arg, "-") == 1 then
+		local ch = string.sub(arg,2)
+		if ch == 'h' then		-- display help
+			displayHelp()
+			status = false
+		elseif ch == 'm' then	-- use modem
+			USEMODEM = true
+		elseif ch == 'c' then	-- use charcoal only
+			CHARCOALONLY = true
+		elseif ch == 'f' then	-- dig how many chunks forward
+			print("How many chunks should the turtle dig forward?")
+			chunks_forward = tonumber(io.read())
+		elseif ch == 'd' then	-- dig how deep
+			print("How deep do you wish the turtle to dig?")
+			max_depth = tonumber(io.read())
+		else
+			io.print("Invalid flag '"..ch.."' !")
+			io.print("Continue? (Y/N)")
+			if (io.read() ~= "Y" or io.read() ~= "y")  then 
+				status = false
+			end
+		end
+	end
+end
 
 
 if USEMODEM then
