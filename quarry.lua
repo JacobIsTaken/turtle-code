@@ -1,4 +1,4 @@
--- BUILD VERSION 2214_22_05_2024
+-- BUILD VERSION 2218_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -333,6 +333,8 @@ for i=1,#tArgs do
 		if ch == 'h' then		-- display help
 			displayHelp()
 			status = false
+			chunks_forward = 0
+			break
 		elseif ch == 'm' then	-- use modem
 			USEMODEM = true
 		elseif ch == 'c' then	-- use charcoal only
