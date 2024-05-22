@@ -263,7 +263,8 @@ function goToOrigin()
 	
 end
 
-function goUp()
+-- First goes up and then goes to the original
+function goBackToStart()
 
 	while z < 0 do
 		
@@ -284,7 +285,7 @@ function mainloop()
 		local errorcode = digLayer()
 	
 		if errorcode ~= OK then
-			goUp()
+			goBackToStart()
 			return errorcode
 		end
 		
@@ -293,13 +294,13 @@ function mainloop()
 		for i=1, 3 do
    -- Changed code!
 			if not t.digDown() then
-    goUp()
+    goBackToStart()
     return BLOCKEDMOV
    end
 			success = t.down()
 		
 			if not success then
-				goUp()
+				goBackToStart()
 				return BLOCKEDMOV
 			end
 

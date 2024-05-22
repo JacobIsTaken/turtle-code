@@ -272,7 +272,8 @@ function goToOrigin()
 	
 end
 
-function goUp()
+-- First goes up and then goes to the original position
+function goBackToStart()
 	
 	while z < 0 do
 		
@@ -293,15 +294,14 @@ function mainloop()
 		-- Check if the turtle has reached max depth
 		if math.abs(z) >= max_depth then
 			out("Reached max depth!, going back")
-			goUp()
-			goToOrigin()
+			goBackToStart()
 			return LAYERCOMPLETE
 		end
 
 		local errorcode = digLayer()
 		
 		if errorcode ~= OK then
-			goUp()
+			goBackToStart()
 			return errorcode
 		end
 		
@@ -310,13 +310,13 @@ function mainloop()
 		for i=1, 3 do
 			-- Changed code!
 			if not t.digDown() then
-				goUp()
+				goBackToStart()
 				return BLOCKEDMOV
 			end
 			success = t.down()
 			
 			if not success then
-				goUp()
+				goBackToStart()
 				return BLOCKEDMOV
 			end
 			
