@@ -12,6 +12,7 @@
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global",
-        "undefined-field"
+        "undefined-field",
+        "cast-local-type"
     ]
 }

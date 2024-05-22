@@ -1,4 +1,4 @@
--- BUILD VERSION 2240_22_05_2024
+-- BUILD VERSION 2330_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -291,6 +291,7 @@ function mainloop()
 		-- Check if the turtle has reached max depth
 		if math.abs(z) >= max_depth then
 			out("Reached max depth!, going back")
+			goToOrigin()
 			return LAYERCOMPLETE
 		end
 
@@ -381,12 +382,14 @@ for i = 1, chunks_forward, 1 do
 			break
 		end
 	end
-	for j = 1, 15, 1 do
+	if chunks_forward>1 and i~=chunks_forward then
+		for j = 1, 15, 1 do
+			turtle.forward()
+		end
+		turtle.dig()
 		turtle.forward()
+		turtle.digUp()
 	end
-	turtle.dig()
-	turtle.forward()
-	turtle.digUp()
 end
 
 if USEMODEM then
