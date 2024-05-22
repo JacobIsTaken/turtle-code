@@ -1,4 +1,4 @@
--- BUILD VERSION 2038_22_05_2024
+-- BUILD VERSION 2123_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -43,30 +43,22 @@ end
 
 function dropInChest()
 	turnAround()
-	
+		
 	local success, data = turtle.inspect()
-	
-	if success then
-		if data.name == "minecraft:chest" then
+
+	if success and (data.name == "minecraft:chest" or data.name == "ironchest:obsidian_chest") then
+		out("Dropping items in chest")
+		
+		for i = 1, 16 do
+			turtle.select(i)
+			local item = turtle.getItemDetail()
 			
-			out("Dropping items in chest")
-			
-			for i=1, 16 do
-				turtle.select(i)
-				
-				data = turtle.getItemDetail()
-				
-				if data ~= nil and
-				data.name ~= "minecraft:charcoal" and
-				(data.name == "minecraft:coal" and CHARCOALONLY == false) == false and
-				(data.damage == nil or data.name .. data.damage ~= "minecraft:coal1") then
-					
-					turtle.drop()
-				end
+			if item and item.name ~= "minecraft:charcoal" and item.name ~= "quark:charcoal_block" and not (item.name == "minecraft:coal" and CHARCOALONLY) and (not item.damage or item.damage ~= 1) then
+				turtle.drop()
 			end
 		end
 	end
-	
+
 	turnAround()
 end
 
