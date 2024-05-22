@@ -18,9 +18,12 @@ function dig()
 		if data.name == "minecraft:bedrock" then
 			printError("Hit bedrock forwards!")
 			return false
-  elseif data.name == "atum:limestone_cracked" then
-   printError("Hit limestone forward!, going back")
-   return false
+		elseif data.name == "atum:limestone_cracked" then
+   			printError("Hit limestone forward!, going back")
+			return false
+		elseif data.name == "quark:charcoal_block" then
+   			printError("Hit charcoal block forward!, going back")
+			return false
 		end
 		
 		turtle.dig()
@@ -28,10 +31,8 @@ function dig()
 		
 		tries = tries+1
 		if tries > MAXTRIES then
-
 			printError("Can't dig forward")
 			return false
-			
 		end
 	end
 	
@@ -45,11 +46,14 @@ function digDown()
 
 		local s, data = turtle.inspectDown()
 		if data.name == "minecraft:bedrock" then
-			printError("Hit bedrock below!")
+			printError("Hit bedrock below!, going back")
 			return false
-  elseif data.name == "atum:limestone_cracked" then
-   printError("Hit limestone!, going back")
-   return false
+		elseif data.name == "atum:limestone_cracked" then
+			printError("Hit limestone below!, going back")
+			return false
+		elseif data.name == "quark:charcoal_block" then
+			printError("Hit charcoal block below!, going back")
+			return false
 		end
 	
 		turtle.digDown()
@@ -73,6 +77,12 @@ function digUp()
 		local s, data = turtle.inspectUp()
 		if data.name == "minecraft:bedrock" then
 			printError("Hit bedrock above!")
+			return false
+		elseif data.name == "atum:limestone_cracked" then
+			printError("Hit limestone above!, going back")
+			return false
+		elseif data.name == "quark:charcoal_block" then
+			printError("Hit charcoal block above!, going back")
 			return false
 		end
 	

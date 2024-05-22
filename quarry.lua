@@ -1,4 +1,4 @@
--- BUILD VERSION 1911_19_05_2024
+-- BUILD VERSION 2021_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -48,7 +48,7 @@ for i=1,#tArgs do
 		else
 			io.print("Invalid flag '"..ch.."' !")
 			io.print("Continue? (Y/N)")
-			if (io.read()) ~= "Y"  then 
+			if (io.read() ~= "Y" or io.read() ~= "y")  then 
 				status = false
 			end
 		end

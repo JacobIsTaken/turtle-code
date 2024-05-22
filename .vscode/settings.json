@@ -6,7 +6,9 @@
         "inv",
         "write",
         "http",
-        "fs"
+        "fs",
+        "printError",
+        "sleep"
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global",
