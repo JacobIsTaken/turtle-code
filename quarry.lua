@@ -1,4 +1,4 @@
--- BUILD VERSION 2352_22_05_2024
+-- BUILD VERSION 0003_23_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -69,10 +69,10 @@ end
 function goDown()
 	while true do
 		-- Check if the turtle has reached max depth
-		-- if math.abs(z) >= max_depth then
-		-- 	out("Reached max depth!, going back")
-		-- 	return
-		-- end
+		if math.abs(z) >= max_depth then
+			out("Reached max depth!, going back")
+			return
+		end
 		if turtle.getFuelLevel() <= fuelNeededToGoBack() then
 			if not refuel() then
 				return OUTOFFUEL
@@ -291,9 +291,9 @@ function mainloop()
 	
 	while true do
 		
-		-- Check if the turtle has reached max depth
+		-- if the turtle has reached max depth go back to start
 		if math.abs(z) >= max_depth then
-			out("Reached max depth!, going back")
+			-- out("Reached max depth!, going back")
 			goBackToStart()
 			return LAYERCOMPLETE
 		end
@@ -370,10 +370,10 @@ end
 for i = 1, chunks_forward, 1 do
 	-- Digging chunk
 	while status == true do
-		
-		print("####################################")
-		print("### WELCOME TO THE MINING TURTLE ###")
-		print("####################################\n")
+									
+		print("#######################################")
+		print("#### QUARRY TURTLE SOFTWARE V0.1.1 ####")
+		print("#######################################\n")
 		
 		out("Starting mining")
 		goDown()
