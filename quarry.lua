@@ -1,4 +1,4 @@
--- BUILD VERSION 2232_22_05_2024
+-- BUILD VERSION 2240_22_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -67,7 +67,7 @@ end
 function goDown()
 	while true do
 		-- Check if the turtle has reached max depth
-		if z <= max_depth then
+		if math.abs(z) >= max_depth then
 			out("Reached max depth!, going back")
 			return
 		end
@@ -289,7 +289,7 @@ function mainloop()
 	while true do
 		
 		-- Check if the turtle has reached max depth
-		if z <= max_depth then
+		if math.abs(z) >= max_depth then
 			out("Reached max depth!, going back")
 			return LAYERCOMPLETE
 		end
