@@ -1,4 +1,4 @@
--- BUILD VERSION 0055_23_05_2024
+-- BUILD VERSION 0209_23_05_2024
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -38,7 +38,7 @@ function out(s)
 
 	print(s2)
 	if USEMODEM then
-		rednet.broadcast(s2, "miningTurtle")
+		rednet.broadcast(s2, "PC1")
 	end  
 end
 
