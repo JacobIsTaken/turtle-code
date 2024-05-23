@@ -33,9 +33,7 @@ function displayHelp()
 end
 
 function out(s)
-	
-	-- s2 = s .. " @ [" .. x .. ", " .. y .. ", " .. z .. "]"
-	
+		
 	s2 = "["..x..";"..y..";"..z.."] "..s
 
 	print(s2)
@@ -207,7 +205,7 @@ function digLayer()
 	
 	while errorcode == OK do
 		if USEMODEM then
-			local msg = rednet.receive(2)
+			local msg = rednet.receive(0.2)
 			if msg ~= nil and string.find(msg, "return") ~= nil then
 				return USRINTERRUPT
 			end
@@ -324,6 +322,7 @@ for i=1,#tArgs do
 		local ch = string.sub(arg,2)
 		if ch == 'h' then		-- display help
 			displayHelp()
+			os.exit()			-- exits the program
 			status = false
 			chunks_forward = 0
 			break
@@ -388,7 +387,7 @@ for current_chunk = 1, chunks_forward, 1 do
 		end
 	end
 	if chunks_forward>1 and current_chunk~=chunks_forward then
-		out("Starting next chunk")
+		out("Starting chunk "..current_chunk+1)
 		for j = 1, ((current_chunk-1)*16)+15, 1 do
 			turtle.forward()
 		end
