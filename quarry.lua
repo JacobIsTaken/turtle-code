@@ -322,10 +322,9 @@ for i=1,#tArgs do
 		local ch = string.sub(arg,2)
 		if ch == 'h' then		-- display help
 			displayHelp()
-			os.exit()			-- exits the program
 			status = false
-			chunks_forward = 0
-			break
+			return				-- should terminate program
+			-- break
 		elseif ch == 'm' then	-- use modem
 			USEMODEM = true
 		elseif ch == 'c' then	-- use charcoal only
@@ -346,57 +345,60 @@ for i=1,#tArgs do
 	end
 end
 
-if USEMODEM then
-	rednet.open("left")
-end
+-- For displaying help 
+if status then
+	if USEMODEM then
+		rednet.open("left")
+	end
 
--- Main runtime
-print("#######################################")
-print("#### QUARRY TURTLE SOFTWARE V0.1.1 ####")
-print("#######################################\n")
+	-- Main runtime
+	print("#######################################")
+	print("#### QUARRY TURTLE SOFTWARE V0.2.0 ####")
+	print("#######################################\n")
 
-out("Starting mining")
+	out("Starting mining")
 
--- Digging chunks forward
-for current_chunk = 1, chunks_forward, 1 do
-	
-	-- Digging chunk
-	while status == true do
-
-		-- if it can't go down then it reached max depth
-		if goDown() then
-			local errorcode = mainloop()
-		else
-			out("Reached max depth!, going back")
-			errorcode = MAXDEPTH
-			goBackToStart()
-		end
+	-- Digging chunks forward
+	for current_chunk = 1, chunks_forward, 1 do
 		
-		out("Chunk finished")
+		-- Digging chunk
+		while status == true do
 
-		-- if its on other chunks go back to first one and dump items in chest
-		if current_chunk>1 then
-			for j = 1, (chunks_forward-1)*16, 1 do
-				turtle.back()
+			-- if it can't go down then it reached max depth
+			if goDown() then
+				local errorcode = mainloop()
+			else
+				out("Reached max depth!, going back")
+				errorcode = MAXDEPTH
+				goBackToStart()
+			end
+			
+			out("Chunk finished")
+
+			-- if its on other chunks go back to first one and dump items in chest
+			if current_chunk>1 then
+				for j = 1, (chunks_forward-1)*16, 1 do
+					turtle.back()
+				end
+			end
+			dropInChest()
+			
+			if errorcode ~= FULLINV then
+				break
 			end
 		end
-		dropInChest()
-		
-		if errorcode ~= FULLINV then
-			break
-		end
-	end
-	if chunks_forward>1 and current_chunk~=chunks_forward then
-		out("Starting chunk "..current_chunk+1)
-		for j = 1, ((current_chunk-1)*16)+15, 1 do
+		if chunks_forward>1 and current_chunk~=chunks_forward then
+			out("Starting chunk "..current_chunk+1)
+			for j = 1, ((current_chunk-1)*16)+15, 1 do
+				turtle.forward()
+			end
+			turtle.dig()
 			turtle.forward()
+			turtle.digUp()
 		end
-		turtle.dig()
-		turtle.forward()
-		turtle.digUp()
 	end
-end
 
-if USEMODEM then
-	rednet.close("left")
+	if USEMODEM then
+		rednet.close("left")
+	end
 end
