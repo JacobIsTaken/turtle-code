@@ -83,7 +83,7 @@ function getItemCount(name)
 end
 
 function dropThrash()
-	local thrash = {"minecraft:stone", "minecraft:granite", "minecraft:andesite", "minecraft:diorite", "minecraft:cobbled_deepslate", "minecraft:tuff", "minecraft:dirt", "minecraft:coarse_dirt", "minecraft:gravel", "minecraft:sand", "minecraft:red_sand", "minecraft:cobblestone", "minecraft:sandstone", "minecraft:red_sandstone", "minecraft:bedrock", "chisel:limestone", "chisel:marble", "chisel:diorite", "chisel:granite", "chisel:andesite", "harvestcraft:salt", "minecraft:netherrack", "byg:brimstone", "atum:limestone_gravel", "atum:sand", "atum:alabaster", "atum:porphyry", "atum:limestone", "atum:limestone_cracked"}
+	local thrash = {"minecraft:stone", "minecraft:granite", "minecraft:andesite", "minecraft:diorite", "minecraft:cobbled_deepslate", "minecraft:tuff", "minecraft:dirt", "minecraft:coarse_dirt", "minecraft:gravel", "minecraft:sand", "minecraft:red_sand", "minecraft:cobblestone", "minecraft:sandstone", "minecraft:red_sandstone", "minecraft:bedrock", "chisel:limestone", "chisel:marble", "chisel:diorite", "chisel:granite", "chisel:andesite", "harvestcraft:salt", "minecraft:netherrack", "byg:brimstone", "atum:limestone_gravel", "atum:sand", "atum:alabaster", "atum:porphyry", "atum:limestone", "atum:limestone_cracked", "atum:limestone_brick_large", "atum:limestone_brick_cracked_brick", "atum:iron_ore", "atum:gold_ore", "atum:relic_dirty_brooch", "atum:relic_dirty_idol", "atum:relic_dirty_ring", "atum:coin_dirty", "atum:limestone_brick_chiseled", "atum:limestone_brick_carved", "atum:limestone_brick_small", "atum:dusty_bone", "minecraft:flint", "atum:large_wall", "minecraft:rail", "atum:marl", "atum:khnumite"}
 
 	for i=1, 16 do
 	
