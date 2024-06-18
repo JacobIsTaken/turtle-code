@@ -366,15 +366,14 @@ if status then
 
 			-- if it can't go down then it reached max depth
 			if goDown() then
-				local errorcode = mainloop()
+				errorcode = mainloop()
 			else
 				out("Reached max depth!, going back")
 				errorcode = MAXDEPTH
 				goBackToStart()
 			end
 			
-			out("Chunk finished")
-
+			
 			-- if its on other chunks go back to first one and dump items in chest
 			if current_chunk>1 then
 				for j = 1, (chunks_forward-1)*16, 1 do
@@ -384,9 +383,11 @@ if status then
 			dropInChest()
 			
 			if errorcode ~= FULLINV then
+				out("Chunk finished")
 				break
 			end
 		end
+
 		if chunks_forward>1 and current_chunk~=chunks_forward then
 			out("Starting chunk "..current_chunk+1)
 			for j = 1, ((current_chunk-1)*16)+15, 1 do
