@@ -1,4 +1,4 @@
--- BUILD VERSION 1741_18_06_2024
+-- BUILD VERSION 0220_16_09_2025
 
 os.loadAPI("inv")
 os.loadAPI("t")
@@ -29,7 +29,7 @@ local USEMODEM = false
 
 -- Functions
 function displayHelp()
-	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h	to display help\n-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
+	print("Quarry script example usage\n'quarry -{arg} -{next_arg}'\nAvailable parameters:\n-h or --help to display help\n-m	to use modem\n-c	to only use charcoal\n-f	to define how many chunks forward to dig\n-d	to define how deep should the turtle dig")
 end
 
 function out(s)
@@ -48,14 +48,14 @@ function dropInChest()
 		
 	local success, data = turtle.inspect()
 
-	if success and (data.name == "minecraft:chest" or data.name == "ironchest:obsidian_chest") then
+	if success and (data.name == "minecraft:chest" or data.name == "ironchest:obsidian_chest" or data.name == "sophisticatedstorage:netherite_barrel") then
 		out("Dropping items in chest")
 		
 		for i = 1, 16 do
 			turtle.select(i)
 			local item = turtle.getItemDetail()
 			
-			if item and item.name ~= "minecraft:charcoal" and item.name ~= "quark:charcoal_block" and not (item.name == "minecraft:coal" and CHARCOALONLY) and (not item.damage or item.damage ~= 1) then
+			if item and item.name ~= "minecraft:charcoal" and item.name ~= "minecraft:coal_block" and not (item.name == "minecraft:coal" and CHARCOALONLY) and (not item.damage or item.damage ~= 1) then
 				turtle.drop()
 			end
 		end
@@ -97,7 +97,7 @@ function refuel()
         -- Prioritize charcoal blocks
         turtle.select(i)
         item = turtle.getItemDetail()
-        if item and (item.name == "quark:charcoal_block" and turtle.refuel(1)) then
+        if item and (item.name == "minecraft:coal_block" and turtle.refuel(1)) then
             return true
         end
     end
@@ -320,7 +320,7 @@ for i=1,#tArgs do
 	local arg = tArgs[i]
 	if string.find(arg, "-") == 1 then
 		local ch = string.sub(arg,2)
-		if ch == 'h' then		-- display help
+		if ch == 'h' or ch == '-help' then		-- display help
 			displayHelp()
 			status = false
 			return				-- should terminate program
@@ -353,7 +353,7 @@ if status then
 
 	-- Main runtime
 	print("#######################################")
-	print("#### QUARRY TURTLE SOFTWARE V0.2.0 ####")
+	print("#### QUARRY TURTLE SOFTWARE V0.2.2 ####")
 	print("#######################################\n")
 
 	out("Starting mining")
